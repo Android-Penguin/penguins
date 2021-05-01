@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <title>pegnuin.xyz | Home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Penguin yes">
+  <meta name="keywords" content="Penguin, more penguins, penguin">
+  <meta name="author" content="Shaun C-B">
+  <link rel="stylesheet" href="styles_penguin.css">
+  <!-- <link rel="shortcut icon" href="ui_images/websiteicon.ico"> -->
+</head>
+
+<body>
+  <!-- Load screen container -->
+  <div id=load-box>
+    <h1 class="title-text">&#5285;pe<span class="underline title-text">gn</span>uin.xyz&#5287;</h1>
+  </div>
+
+  <!-- Title container -->
+  <div id=title-box>
+    <div id="title-img-container">
+      <img id="title-penguin-img" src="penguin_gradient.png" alt="Penguin Plush">
+    </div>
+    <div id="title-text-container">
+      <div id="logo-div">
+        <h1 class="title-text">pe<span class="underline title-text">gn</span>uin.xyz</h1>   
+      </div>
+      <p>gallery of penguins (what else did you expect) | <span id=click onclick="changeColour()">click to change hover colour</span></p>
+    </div>
+  </div>
+
+  <!-- Gallery container -->
+  <div id="gallery-container" class="flex-container">
+    <!-- items in the gallery are dynamically inserted by script -->
+  </div>
+  <a href='https://www.freepik.com/vectors/watercolor'>Watercolor vector created by ilonitta - www.freepik.com</a>
+</body>
+
+<!-- Change colour of box hover when user clicks button -->
+<script>
+  function changeColour() {
+    var value;
+    var colour = prompt("Enter hex code", "#58CCED");
+    if(colour == null || colour == "") {
+      value = "#58CCED";
+    } else {
+      value = colour;
+    }
+    galleryItems = document.getElementsByClassName('gallery-itemframe');
+    for(item of galleryItems) {
+      item.style.color = colour;
+    }
+  }
+</script>
+
+<!-- Array stored on dropbox -->
+<script src="https://dl.dropboxusercontent.com//s/oy6popqzo1n2g1g/penguin_image_list.js?"></script>
+
+<!-- Handles loading box animation and duration -->
+<script>
+  var loadBox = document.getElementById("load-box");//variable for div element
+  var imagesLoaded = 0;//initial number of images loaded
+  var totalImages = penguin_image_list.length;//total number of images to be loaded
+  // function run whenever an image is loaded
+  function imageLoaded(imageObject) {
+    // sets class based on orientation of image
+    var positionInfo = imageObject.getBoundingClientRect();
+    if(positionInfo.height > positionInfo.width) {
+      imageObject.classList.add("portrait-image");
+    } else if(positionInfo.width >= positionInfo.height) {
+      imageObject.classList.add("landscape-image");
+    }
+    imagesLoaded ++;
+    if(imagesLoaded == totalImages) {
+      // begins fadeout animation when all images are loaded
+      loadBox.classList.toggle("fade-out");
+    }
+  }
+  // function removes div when it becomes invisible
+  loadBox.addEventListener("animationend", removeDiv);
+  function removeDiv() {
+    loadBox.style.display = "none";
+  }
+</script>
+
+<!-- Dynamically create gallery  -->
+<script>
+/* Goes through each item in the array and creates a div
+with the image and metadata. Each newly created item
+is then added to the gallery. */
+  for(item of penguin_image_list) {
+    // creates new div element
+    var div = document.createElement("div");
+    // sets the div as a gallery 'photoframe' item
+    div.setAttribute("class", "gallery-itemframe");
+    // creates an image element
+    var img = document.createElement("img");
+    // sets the image as a gallery image
+    img.setAttribute("class", "gallery-image")
+    // sets the source of the image
+    img.setAttribute("src", item.url);
+    // sets image metadata
+    img.setAttribute("title", item.name);
+    img.setAttribute("alt", item.name);
+    // creates onclick attribute
+    var clickFunction = "onclick=modalOpen(" + item.url + ")";
+    // assigns onclick attribute to image
+    img.setAttribute("onclick", clickFunction);
+    // assigns onload attribute
+    img.setAttribute("onload", "onload=imageLoaded(this)");
+    // adds image into the photoframe
+    div.appendChild(img);
+    // adds the photoframe to the gallery
+    document.getElementById("gallery-container").appendChild(div);
+  }
+</script>

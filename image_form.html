@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <title>2dpenguin | Form</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Penguin yes">
+  <meta name="keywords" content="Penguin, more penguins, penguin">
+  <meta name="author" content="Shaun C-B">
+  <link rel="stylesheet" href="styles_penguin.css">
+  <!-- <link rel="shortcut icon" href="ui_images/websiteicon.ico"> -->
+</head>
+
+<body>
+  <!-- Title container -->
+  <div id=title-box>
+    <h1 class="title-text">pe<span class="underline title-text">gn</span>uin.xyz</h1>
+  </div>
+
+  <div id=form-box>
+    <form id=img-entry>
+      <label for="img-title">Image Title:</label><br>
+      <input id="img-title" name="img-title" type=text><br><br>
+      <label for="img-url">Image URL:</label><br>
+      <input id="img-url" name="img-url" type=text><br><br>
+    </form>
+    <button>click to copy item</button>
+
+    <hr>
+    <p>Preview:</p>
+    <div id="preview-container">
+      <div id="img-preview-box" class="preview-box">
+        <img id="img-preview" class="gallery-image">
+      </div>
+      <div id="url-preview-box" class="preview-box">
+        <h4>Array Code:</h4>
+        <pre id=array-code>
+{"name":"<span id="title-span"></span>",
+  "url":"<span id="url-span"></span>"},
+        </pre>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+    window.setInterval(()=>{
+        var form = document.getElementById("img-entry");
+        var titleSpan = document.getElementById("title-span");
+        var urlSpan = document.getElementById("url-span");
+        var imgPreview = document.getElementById("img-preview");
+
+        imgPreview.setAttribute("title", form.elements["img-title"].value);
+        imgPreview.setAttribute("src", form.elements["img-url"].value);
+        titleSpan.innerHTML = form.elements["img-title"].value;
+        urlSpan.innerHTML = form.elements["img-url"].value;
+    }, 5);
+</script>
+
+<script>
+  // document.getElementById("img-entry").addEventListener("paste", updateOrientation);
+  document.getElementById("img-preview").addEventListener("load", updateOrientation);
+  function updateOrientation() {
+    var imgPreview = document.getElementById("img-preview");
+    imgPreview.setAttribute("class", "gallery-image");
+    var positionInfo = imgPreview.getBoundingClientRect();
+    if(positionInfo.height > positionInfo.width) {
+      imgPreview.classList.add("portrait-image");
+    } else if(positionInfo.width >= positionInfo.height) {
+      imgPreview.classList.add("landscape-image");
+    }
+  }
+
+</script>
